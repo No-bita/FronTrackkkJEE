@@ -17,7 +17,7 @@ function setupSignupLink() {
     if (signupLink) {
         signupLink.addEventListener("click", () => {
             console.log("Sign-up link clicked"); // Debug log
-            window.location.href = "dashboard.html"; // Redirect to signup page
+            window.location.href = "signup.html"; // Redirect to signup page
         });
     }
 }
