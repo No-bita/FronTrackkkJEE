@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | BacktrackJEE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <!-- Main Content -->
+    <main class="content">
+        <!-- Top Navigation -->
+        <header class="top-nav">
+            <h1>BacktrackJEE</h1>
+            <div class="nav-right">
+                <span id="user-info">Welcome, User</span>
+                <button class="upgrade-btn">Upgrade</button>
+            </div>
+        </header>        
+
+        <!-- Dashboard -->
+        <div class="dashboard">
+            <div class="card">
+                <h3>Performance Overview</h3>
+                <p>Your JEE preparation progress</p>
+                <div class="chart">
+                    <div class="pie-chart"></div>
+                </div>
+                <ul class="stakeholders">
+                    <li><span class="color blue"></span> Physics - 68.42%</li>
+                    <li><span class="color green"></span> Chemistry - 10.52%</li>
+                    <li><span class="color purple"></span> Mathematics - 21.05%</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Recent Activity</h3>
+                <p>Last 30 days progress</p>
+                <p>✅ 2 Full Tests Completed</p>
+                <p>✅ 4 Subject Tests Completed</p>
+                <div class="stats-value">85%</div>
+                <p>Average Accuracy</p>
+            </div>
+
+            <div class="card">
+                <h3>Practice Status</h3>
+                <p>JEE Main 2023</p>
+                <div class="progress-bar">
+                    <span style="width: 20%;"></span>
+                </div>
+                <p>4/20 Previous Year Papers Completed</p>
+                <button class="update-btn">View Analysis</button>
+            </div>
+        </div>
+
+        <!-- Dropdown for Year and Slot Selection -->
+        <section class="dropdown-container">
+            <div class="dropdown">
+                <select id="year-dropdown">
+                    <option value="" disabled selected>Select JEE Year</option>
+                </select>
+            </div>
+            <div class="dropdown">
+                <select id="slot-dropdown">
+                    <option value="" disabled selected>Select JEE Session</option>
+                </select>
+            </div>
+            <button id="start-quiz-btn">Start Test</button>
+        </section>
+
+        <!-- Logout Button -->
+        <button id="logout">Logout</button>
+    </main>
+
+    <!-- Link JavaScript File -->
+    <script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JEEBacktrack - Test Page</title>
+  <link rel="stylesheet" href="css/exam_style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <div class="logo">
+        <a href="home.html">JEEBacktrack</a>
+      </div>
+      <ul>
+        <li><a href="#" id="logout-btn" class="logout">Logout</a></li> <!-- ✅ Now functional -->
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Timer Section -->
+  <section class="timer-section">
+    <h2>Time Remaining: <span id="timer">3:00:00</span></h2>
+  </section>
+
+  <main>
+    <!-- Test Content -->
+    <section class="test-container">
+      <div class="question-panel">
+        <h3 id="question">Loading question...</h3>
+        <img id="question-image" src="" alt="Question Diagram" style="max-width: 100%; margin: 20px 0; display: none;">
+        <div class="options"></div>
+      </div>
+      <div class="navigation-panel">
+        <h4>Navigate Questions:</h4>
+        <div id="question-buttons" class="question-buttons">
+          <!-- Dynamic question buttons will be generated here -->
+        </div>
+
+        <div class="navigation-controls">
+          <button id="prev-btn">Prev</button>
+          <button id="next-btn">Next</button>
+          <button id="submit-btn">Submit Test</button>
+        </div>
+      </div>    
+    </section>
+  </main>
+
+  <script src="/Users/aaryanshah/Desktop/Tableau/jee-portal/frontend/js/exam_script.js"></script>
+</body>
+</html>
