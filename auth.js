@@ -23,17 +23,19 @@ function setupSignupLink() {
 }
 
 // Setup Logout Button
-function setupLogoutButton() {
-    const logoutBtn = document.getElementById("logout-btn");
-    //logoutBtn.addEventListener("click", logout);
+function setupLogout() {
+    const logoutBtn = document.getElementById("logout");
     if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => {
-            localStorage.removeItem("token");
-            localStorage.removeItem("userInfo");
-            window.location.href = "index.html";
+        logoutBtn.addEventListener("click", function () {
+            sessionStorage.clear();  // Clears sessionStorage (temporary data)
+            localStorage.clear();    // Clears localStorage (persistent data)
+            document.cookie = "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // Deletes cookies
+            
+            window.location.href = "index.html"; // Redirects to home page
         });
     }
 }
+
 
 async function logout() {
     localStorage.removeItem("token");
