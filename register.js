@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:5001/api"; // Adjust this to match your backend
+const API_BASE_URL = "https://backend-q2xl.onrender.com/api"; // Adjust this to match your backend
 
 // ✅ Handle User Registration
 async function handleRegister(event) {
