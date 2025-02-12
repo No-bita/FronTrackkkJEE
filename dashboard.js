@@ -15,7 +15,7 @@ function setupLogout() {
     if (logoutBtn) {
         logoutBtn.addEventListener("click", function () {
             sessionStorage.removeItem("userToken");
-            window.location.href = "home.html";
+            window.location.href = "index.html";
         });
     }
 }
