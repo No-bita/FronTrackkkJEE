@@ -1,10 +1,10 @@
-const API_BASE_URL = "https://backend-q2xl.onrender.com/api/auth";
+const API_BASE_URL = "https://backend-q2xl.onrender.com/api";
 
 // Setup event listeners when DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
     setupSignupLink();
-    setupLogoutButton();
-    checkAuthStatus();
+    setupLogout();
+    checkAuth();
 
     if (document.getElementById("year-dropdown")) {
         fetchYears();
@@ -22,6 +22,22 @@ function setupSignupLink() {
     }
 }
 
+function setupLoginLink() {
+    const loginLink = document.getElementById("login-link");
+    if (loginLink) {
+        loginLink.addEventListener("click", () => {
+            const token = localStorage.getItem("token");
+            if (token) {
+                console.log("User already logged in, redirecting to dashboard.");
+                window.location.href = "dashboard.html"; // ✅ Redirect only if logged in
+            } else {
+                console.log("No active session, redirecting to login.");
+                window.location.href = "signup.html"; // ✅ Redirect to signup/login page
+            }
+        });
+    }
+}
+
 // Setup Logout Button
 function setupLogout() {
     const logoutBtn = document.getElementById("logout");
@@ -29,34 +45,49 @@ function setupLogout() {
         logoutBtn.addEventListener("click", function () {
             sessionStorage.clear();  // Clears sessionStorage (temporary data)
             localStorage.clear();    // Clears localStorage (persistent data)
-            document.cookie = "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // Deletes cookies
+            document.cookie.split(";").forEach((cookie) => {
+                document.cookie = cookie
+                    .replace(/^ +/, "")
+                    .replace(/=.*/, "=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + location.hostname);
+            });
+
+            console.log("User logged out, session cleared."); // Debugging log
             
-            window.location.href = "index.html"; // Redirects to home page
+            // ✅ Redirect to index.html (Login page)
+            window.location.href = "index.html";
         });
     }
 }
 
 
-async function logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userInfo");
-    window.location.href = "index.html";
-}
-
-// Check Authentication Status
-function checkAuthStatus() {
+function checkAuth() {
     const token = localStorage.getItem("token");
-    if (token) {
-        fetchUserDetails();
+    const protectedPages = ['dashboard.html', 'exam.html'];
+    const currentPage = window.location.pathname.split('/').pop();
+
+    if (!token) {
+        if (protectedPages.includes(currentPage)) {
+            console.log("User not logged in. Redirecting to index.html...");
+            window.location.href = "index.html"; // Redirect to login if unauthorized
+        }
+    } else {
+        fetchUserDetails(); // Fetch user info if authenticated
     }
 }
 
-// ✅ Fetch User Details from Backend
+
 async function fetchUserDetails() {
     try {
         const response = await fetch(`${API_BASE_URL}/user`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
+
+        if (!response.ok) {
+            localStorage.clear(); // Clear invalid session
+            sessionStorage.clear();
+            window.location.href = "index.html"; // Redirect to login
+            return;
+        }
 
         const data = await response.json();
 
@@ -68,21 +99,13 @@ async function fetchUserDetails() {
         }
     } catch (error) {
         console.error("Error fetching user details:", error);
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.href = "index.html"; // Ensure redirect on failure
     }
 }
 
-// ✅ Prevent unauthorized access to protected pages
-function checkAuth() {
-    const protectedPages = ['main.html', 'exam.html'];
-    const currentPage = window.location.pathname.split('/').pop();
 
-    if (protectedPages.includes(currentPage) && !localStorage.getItem("token")) {
-        window.location.href = "index.html";
-    }
-}
-checkAuth();
-
-// ✅ Fetch Available Years
 async function fetchYears() {
     try {
         const response = await fetch(`${API_BASE_URL}/questions/years`);
@@ -90,18 +113,22 @@ async function fetchYears() {
 
         const years = await response.json();
         const yearDropdown = document.getElementById("year-dropdown");
-        if (yearDropdown) {
-            yearDropdown.innerHTML = '<option value="" disabled selected>Select Year</option>';
-            years.forEach(year => {
-                yearDropdown.innerHTML += `<option value="${year}">${year}</option>`;
-            });
-            yearDropdown.addEventListener("change", fetchSlots);
-        }    
+        if (!yearDropdown) return; // Ensure the dropdown exists
+
+        yearDropdown.innerHTML = '<option value="" disabled selected>Select Year</option>';
+        years.forEach(year => {
+            yearDropdown.innerHTML += `<option value="${year}">${year}</option>`;
+        });
+        yearDropdown.addEventListener("change", fetchSlots);
     } catch (error) {
         console.error("Error fetching years:", error);
-        document.getElementById("year-dropdown").innerHTML = '<option value="" disabled>No years available</option>';
+        const yearDropdown = document.getElementById("year-dropdown");
+        if (yearDropdown) {
+            yearDropdown.innerHTML = '<option value="" disabled>No years available</option>';
+        }
     }
 }
+
 
 // ✅ Fetch Available Slots Based on Selected Year
 async function fetchSlots() {
@@ -138,20 +165,12 @@ async function handleSignup(event) {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     
-    // Debug log - Form Data
-    console.log('Form Data:', { name, email, password: '****' });
-    
     // Validate inputs
     if (!validateSignupInputs(name, email, password)) {
         return;
     }
     
     try {
-        console.log('Attempting to register user...'); // Debug log
-        
-        // Log the API endpoint being called
-        console.log('API Endpoint:', `${API_BASE_URL}/register`);
-        
         const response = await fetch(`${API_BASE_URL}/register`, {
             method: 'POST',
             headers: { 
@@ -164,31 +183,20 @@ async function handleSignup(event) {
                 password 
             })
         });
-        
-        console.log('Response status:', response.status); // Debug log
-        
-        // Log the full response
+
         const data = await response.json();
-        console.log('Response data:', data); // Debug log
         
-        if (response.ok && data.success) {  // Check both response.ok and data.success
+        if (response.ok) { // Successful registration
             localStorage.setItem('token', data.token);
             localStorage.setItem('userInfo', JSON.stringify(data.user));
-            window.location.href = 'main.html';
+            window.location.href = 'dashboard.html';
         } else {
             // Show specific error message from server if available
-            const errorMessage = data.message || 'Registration failed. Please try again.';
-            showError('email-error', errorMessage);
-            console.error('Registration failed:', errorMessage);
+            showError('email-error', data.message || 'Registration failed.');
         }
     } catch (error) {
         console.error('Registration error:', error);
-        // Show more specific error message
-        if (error.message.includes('Failed to fetch')) {
-            showError('email-error', 'Unable to connect to server. Please check your internet connection.');
-        } else {
-            showError('email-error', 'Registration failed. Please try again later.');
-        }
+        showError('email-error', 'An error occurred. Please try again later.');
     }
 }
 
