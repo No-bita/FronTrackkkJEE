@@ -21,23 +21,6 @@ function setupSignupLink() {
         });
     }
 }
-
-function setupLoginLink() {
-    const loginLink = document.getElementById("login-link");
-    if (loginLink) {
-        loginLink.addEventListener("click", () => {
-            const token = localStorage.getItem("token");
-            if (token) {
-                console.log("User already logged in, redirecting to dashboard.");
-                window.location.href = "dashboard.html"; // ✅ Redirect only if logged in
-            } else {
-                console.log("No active session, redirecting to login.");
-                window.location.href = "signup.html"; // ✅ Redirect to signup/login page
-            }
-        });
-    }
-}
-
 // Setup Logout Button
 function setupLogout() {
     const logoutBtn = document.getElementById("logout");
