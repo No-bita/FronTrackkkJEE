@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:5001/api"; // Adjust for production
+const API_BASE_URL = "https://backend-q2xl.onrender.com/api"; // Adjust for production
 let questions = [];
 let currentQuestionIndex = 0;
 let userAnswers = {};
