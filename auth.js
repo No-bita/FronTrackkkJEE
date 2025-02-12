@@ -1,4 +1,6 @@
-const API_BASE_URL = "https://backend-q2xl.onrender.com/api";
+// const API_BASE_URL = "https://backend-q2xl.onrender.com/api";
+const API_BASE_URL = "https://localhost:5001/api";
+
 
 // Setup event listeners when DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
@@ -17,7 +19,7 @@ function setupSignupLink() {
     if (signupLink) {
         signupLink.addEventListener("click", () => {
             console.log("Sign-up link clicked"); // Debug log
-            window.location.href = "signup.html"; // Redirect to signup page
+            window.location.href = "register.html"; // Redirect to signup page
         });
     }
 }
@@ -154,7 +156,7 @@ async function handleSignup(event) {
     }
     
     try {
-        const response = await fetch(`${API_BASE_URL}/register`, {
+        const response = await fetch(`${API_BASE_URL}/auth/register`, {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
