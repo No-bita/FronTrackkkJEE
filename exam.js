@@ -302,7 +302,7 @@ function submitTest() {
     .then(response => response.json())
     .then(data => {
         alert(`✅ Test Submitted! Your Score: ${data.score}`);
-        window.location.href = "home.html"; // Redirect to home page
+        window.location.href = "results.html"; // Redirect to home page
     })
     .catch(error => console.error("❌ Error submitting test:", error));
 }
