@@ -43,6 +43,92 @@ async function fetchQuestions() {
     }
 }
 
+let timer; // Timer variable
+
+// ✅ Function to collect answers
+function collectAnswers() {
+    const answers = {};
+    const timeTaken = {};
+
+    document.querySelectorAll(".question").forEach((question) => {
+        const questionId = question.getAttribute("data-id");
+        const selectedOption = question.querySelector("input[type='radio']:checked");
+
+        answers[questionId] = selectedOption ? parseInt(selectedOption.value) : null;
+        timeTaken[questionId] = parseInt(question.getAttribute("data-time")) || 0;
+    });
+
+    return { answers, timeTaken };
+}
+
+// ✅ Function to handle test submission
+async function handleExamSubmit() {
+    clearInterval(timer); // Stop timer to prevent duplicate submission
+
+    const { answers, timeTaken } = collectAnswers();
+    const examId = document.getElementById("exam").getAttribute("data-exam-id");
+
+    if (!examId) {
+        alert("Error: Exam ID missing!");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/responses/submit`, {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}` // Add authentication
+            },
+            body: JSON.stringify({ examId, answers, timeTaken }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // ✅ Store results in local storage
+            localStorage.setItem("examResults", JSON.stringify(data));
+
+            // ✅ Redirect to results page
+            window.location.href = "results.html";
+        } else {
+            alert(`Error: ${data.error}`);
+        }
+    } catch (error) {
+        console.error("❌ Exam Submission Error:", error);
+        alert("Something went wrong. Please try again.");
+    }
+}
+
+// ✅ Countdown Timer Function
+function startTimer(duration) {
+    let timeRemaining = duration;
+
+    timer = setInterval(() => {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        document.getElementById("timer").innerText = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            alert("Time is up! Your test is being submitted.");
+            handleExamSubmit(); // Auto-submit when time is up
+        }
+
+        timeRemaining--;
+    }, 1000);
+}
+
+// ✅ Attach Event Listeners on Page Load
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("submit-exam").addEventListener("click", handleExamSubmit);
+
+    // ✅ Start Timer (Assuming test duration is set in dataset)
+    const duration = parseInt(document.getElementById("exam").getAttribute("data-duration")) || 1800; // Default: 30 min
+    startTimer(duration);
+});
+
+
 // ✅ Generate Question Navigation Buttons
 function generateQuestionButtons() {
     console.log("✅ Generating Question Buttons...");

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Exam Results</h2>
+        <div class="card p-3">
+            <h4>Total Score: <span id="score"></span></h4>
+            <p>✅ Correct Answers: <span id="correct"></span></p>
+            <p>❌ Incorrect Answers: <span id="incorrect"></span></p>
+            <p>⚪ Skipped Questions: <span id="skipped"></span></p>
+            <button class="btn btn-primary" onclick="window.location.href='exam.html'">Try Again</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const results = JSON.parse(localStorage.getItem("examResults"));
+
+            if (results) {
+                document.getElementById("score").innerText = results.score;
+                document.getElementById("correct").innerText = results.correctAnswers;
+                document.getElementById("incorrect").innerText = results.incorrectAnswers;
+                document.getElementById("skipped").innerText = results.skippedAnswers;
+            } else {
+                alert("No results found. Please submit an exam first.");
+                window.location.href = "exam.html";
+            }
+        });
+    </script>   
+</body>
+</html>
