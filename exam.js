@@ -209,7 +209,7 @@ function setupEventListeners() {
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
             localStorage.removeItem("token");
-            window.location.href = "login.html";
+            window.location.href = "dashboard.html";
         });
     }
 
@@ -240,6 +240,54 @@ function setupEventListeners() {
     }
 }
 
+// ✅ Timer Functionality with Auto-Save & Page Refresh Handling
+let timeLeft = localStorage.getItem("timeLeft") ? parseInt(localStorage.getItem("timeLeft")) : 10800; // Default: 3 hours (10800 seconds)
+const timerElement = document.getElementById("timer");
+
+function updateTimerDisplay() {
+    const hours = Math.floor(timeLeft / 3600);
+    const minutes = Math.floor((timeLeft % 3600) / 60);
+    const seconds = timeLeft % 60;
+
+    timerElement.textContent = `${hours}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+// ✅ Start the Timer
+function startTimer() {
+    if (timeLeft <= 0) {
+        submitTest(); // ⏳ Auto-submit if time is already 0
+        return;
+    }
+
+    updateTimerDisplay(); // Show initial time
+
+    timerInterval = setInterval(() => {
+        if (timeLeft > 0) {
+            timeLeft--;
+            updateTimerDisplay();
+            localStorage.setItem("timeLeft", timeLeft);
+        } else {
+            clearInterval(timerInterval);
+            alert("⏳ Time is up! Submitting the test.");
+            submitTest();
+        }
+    }, 1000);
+}
+
+// ✅ Event: Reset Timer on Test Start
+document.addEventListener("DOMContentLoaded", () => {
+    startTimer();
+
+    document.getElementById("submit-btn").addEventListener("click", () => {
+        submitTest();
+    });
+
+    window.addEventListener("beforeunload", () => {
+        localStorage.setItem("timeLeft", timeLeft); // 🔄 Save remaining time if page is refreshed
+    });
+});
+
+
 // ✅ Submit Test Function
 function submitTest() {
     clearInterval(timerInterval); // Stop the timer
@@ -259,31 +307,6 @@ function submitTest() {
     .catch(error => console.error("❌ Error submitting test:", error));
 }
 
-// ✅ Timer Functionality
-let timeLeft = localStorage.getItem("timeLeft") ? parseInt(localStorage.getItem("timeLeft")) : 10800; // Default to 3 hours (10800 seconds)
-const timerElement = document.getElementById("timer");
-
-function startTimer() {
-    function updateTimer() {
-        const hours = Math.floor(timeLeft / 3600);
-        const minutes = Math.floor((timeLeft % 3600) / 60);
-        const seconds = timeLeft % 60;
-
-        timerElement.textContent = `${hours}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            alert("⏳ Time is up! Submitting the test.");
-            submitTest();
-        } else {
-            timeLeft--;
-            localStorage.setItem("timeLeft", timeLeft);
-        }
-    }
-
-    timerInterval = setInterval(updateTimer, 1000);
-    setInterval(() => localStorage.setItem("timeLeft", timeLeft), 60000); // Save every minute
-}
 
 // ✅ Start Countdown Before Test
 function startCountdown() {
