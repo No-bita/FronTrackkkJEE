@@ -273,7 +273,7 @@ async function submitTest() {
     document.getElementById("submit-btn").textContent = "Submitting...";
 
     try {
-        const response = await fetch(`${API_BASE_URL}/exam/submit`, {
+        const response = await fetch(`${API_BASE_URL}/attempts/submit`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
