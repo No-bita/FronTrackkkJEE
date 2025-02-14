@@ -245,9 +245,19 @@ function handleAnswerSelection(event) {
     }
 }
 
-// ✅ Submit Test Function
+// ✅ Submit Test Function (Updated)
 async function submitTest() {
+    const user_id = localStorage.getItem("user_id");
+    const user_name = localStorage.getItem("user_name");
+
+    if (!user_id) {
+        alert("⚠ User session expired. Please log in again.");
+        window.location.href = "login.html";
+        return;
+    }
+
     const answers = collectAnswers();
+    
     if (Object.values(answers).every(ans => ans === null || ans === undefined)) {
         alert("⚠ You haven't answered any questions. Please attempt at least one before submitting.");
         return;
@@ -255,6 +265,7 @@ async function submitTest() {
 
     clearInterval(timerInterval);
     document.getElementById("submit-btn").textContent = "Submitting...";
+
     try {
         const response = await fetch(`${API_BASE_URL}/exam/submit`, {
             method: "POST",
@@ -262,12 +273,18 @@ async function submitTest() {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             },
-            body: JSON.stringify({ year, slot, answers })
+            body: JSON.stringify({
+                user_id, 
+                user_name, // Personalization
+                year, 
+                slot, 
+                answers 
+            })
         });
 
         const data = await response.json();
         alert(`✅ Test Submitted! Your Score: ${data.score}`);
-        window.location.href = "results.html";
+        window.location.href = "results.html"; // Redirect to results page
     } catch (error) {
         console.error("❌ Error submitting test:", error);
         alert("❌ Submission failed! Please retry.");

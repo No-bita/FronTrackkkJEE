@@ -24,11 +24,16 @@ async function handleLogin(event) {
         const data = await response.json();
 
         if (response.ok) {
-            // ✅ Store JWT token in localStorage
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("userInfo", JSON.stringify(data.user));
+            // ✅ Extract user_id and user_name from response
+            const { _id: user_id, name: user_name } = data.user; 
 
-            alert("✅ Login successful! Redirecting to dashboard...");
+            // ✅ Store JWT token, user_id, and user_name in localStorage
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user_id", user_id);
+            localStorage.setItem("user_name", user_name);
+            localStorage.setItem("userInfo", JSON.stringify(data.user)); // Keep full user info if needed
+
+            alert(`✅ Welcome, ${user_name}! Redirecting to dashboard...`);
             window.location.href = "dashboard.html"; // Redirect user to dashboard
         } else {
             showError("login-error", data.error || "Invalid email or password.");
@@ -38,6 +43,7 @@ async function handleLogin(event) {
         showError("login-error", "An error occurred. Please try again later.");
     }
 }
+
 
 // ✅ Validate Login Inputs
 function validateLoginInputs(email, password) {

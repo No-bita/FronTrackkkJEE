@@ -14,23 +14,26 @@
             <p>✅ Correct Answers: <span id="correct"></span></p>
             <p>❌ Incorrect Answers: <span id="incorrect"></span></p>
             <p>⚪ Skipped Questions: <span id="skipped"></span></p>
-            <button class="btn btn-primary" onclick="window.location.href='exam.html'">Try Again</button>
         </div>
-    </div>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const results = JSON.parse(localStorage.getItem("examResults"));
 
-            if (results) {
-                document.getElementById("score").innerText = results.score;
-                document.getElementById("correct").innerText = results.correctAnswers;
-                document.getElementById("incorrect").innerText = results.incorrectAnswers;
-                document.getElementById("skipped").innerText = results.skippedAnswers;
-            } else {
-                alert("No results found. Please submit an exam first.");
-            }
-        });
-    </script>   
+        <h3 class="mt-4">Review Your Answers</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Question</th>
+                    <th>Your Answer</th>
+                    <th>Correct Answer</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="review-table">
+                <!-- Filled dynamically -->
+            </tbody>
+        </table>
+
+        <button class="btn btn-primary" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+    </div>
+
+    <script src="results.js"></script>
 </body>
 </html>

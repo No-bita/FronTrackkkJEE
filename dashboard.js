@@ -9,6 +9,12 @@ document.addEventListener("DOMContentLoaded", function () {
     setupQuizStart();
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const userName = localStorage.getItem("user_name") || "User";
+    document.getElementById("user-name").textContent = userName;
+});
+
+
 // ✅ Logout Functionality
 function setupLogout() {
     const logoutBtn = document.getElementById("logout");
