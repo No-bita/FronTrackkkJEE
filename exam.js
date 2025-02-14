@@ -1,7 +1,7 @@
 const API_BASE_URL = "https://backend-q2xl.onrender.com/api";
 let questions = [];
 let currentQuestionIndex = 0;
-let userAnswers = {};
+let userAnswers = JSON.parse(localStorage.getItem("userAnswers")) || {};    
 let timerInterval;
 
 // Step 1: Extract year and slot from URL
@@ -117,28 +117,33 @@ function setupEventListeners() {
 
 // ✅ Collect Answers from User Inputs
 function collectAnswers() {
-
+    console.log("Collecting answers...");
+    
     const optionContainers = document.querySelectorAll(".options");
-        if (!optionContainers.length) {
-            console.error("❌ Error: options container not found!");
-            return;
-        }
+    if (!optionContainers.length) {
+        console.error("❌ Error: options container not found!");
+        return {};
+    }
 
-        const answers = {};
+    const answers = {};
 
-        optionContainers.forEach((optionContainer, index) => {
-            if (!questions[index]) return; // Avoid accessing undefined questions
-    
-            const questionId = questions[index]._id;
-            const selectedOption = optionContainer.querySelector("input[type='radio']:checked");
-            const enteredInteger = optionContainer.querySelector("input[type='number']");
-    
-            answers[questionId] = selectedOption ? parseInt(selectedOption.value) :
-                                 enteredInteger && enteredInteger.value !== "" ? parseInt(enteredInteger.value) : null;
-        });
-    
-        return answers;
+    optionContainers.forEach((optionContainer, index) => {
+        if (!questions[index]) return;
+
+        const questionId = questions[index]._id; // ✅ Ensure question has an `_id`
+        const selectedOption = optionContainer.querySelector("input[type='radio']:checked");
+        const enteredInteger = optionContainer.querySelector("input[type='number']");
+
+        answers[questionId] = selectedOption ? parseInt(selectedOption.value) :
+                             enteredInteger && enteredInteger.value !== "" ? parseInt(enteredInteger.value) : null;
+    });
+
+    console.log("✅ Collected Answers:", answers);
+    localStorage.setItem("userAnswers", JSON.stringify(answers)); // ✅ Persist answers
+
+    return answers;
 }
+
 
 // ✅ Timer Functionality with Auto-Save & Page Refresh Handling
 let timeLeft = localStorage.getItem("timeLeft") ? parseInt(localStorage.getItem("timeLeft")) : 10800; // Default: 3 hours (10800 seconds)
@@ -258,9 +263,10 @@ async function submitTest() {
 
     const answers = collectAnswers();
     
-    if (Object.values(answers).every(ans => ans === null || ans === undefined)) {
-        alert("⚠ You haven't answered any questions. Please attempt at least one before submitting.");
-        return;
+    if (!answers || Object.keys(answers).length === 0 || 
+    Object.values(answers).every(ans => ans === null || ans === undefined || ans === "")) {
+    alert("⚠ You haven't answered any questions. Please attempt at least one before submitting.");
+    return;
     }
 
     clearInterval(timerInterval);
