@@ -14,17 +14,14 @@ if (!year || !slot) {
     window.location.href = "dashboard.html"; // Redirect to homepage if missing parameters
 }
 
+// Fetch Questions from Backend
 document.addEventListener("DOMContentLoaded", async () => {
     await fetchQuestions();
     setupEventListeners();
 
     const savedAnswers = JSON.parse(localStorage.getItem("userAnswers")) || {};
     userAnswers = savedAnswers;
-    
-    // ✅ Reload question to ensure stored answers are applied
-    updateQuestion();
 });
-
 
 // ✅ Fetch Questions from the Backend
 async function fetchQuestions() {
@@ -90,12 +87,10 @@ function generateQuestionButtons() {
 // ✅ Navigation Functions
 function goToQuestion(index) {
     if (index >= 0 && index < questions.length) {
-        collectAnswers();  // ✅ Save answers before switching questions
         currentQuestionIndex = index;
         updateQuestion();
     }
 }
-
 
 // ✅ Setup Event Listeners for Buttons
 function setupEventListeners() {
@@ -204,11 +199,11 @@ document.addEventListener("input", handleAnswerSelection);
 
 function handleAnswerSelection(event) {
     if (event.target.type === "radio" || event.target.type === "number") {
-        const questionId = questions[currentQuestionIndex]._id;
+        const questionId = questions[currentQuestionIndex]._id; // Get the question ID
         const selectedValue = event.target.type === "radio" ? parseInt(event.target.value) : parseInt(event.target.value);
 
-        userAnswers[questionId] = selectedValue;
-        localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+        userAnswers[questionId] = selectedValue; // Store response in userAnswers object
+        localStorage.setItem("userAnswers", JSON.stringify(userAnswers)); // Persist to localStorage
 
         // ✅ Change button color to Green for answered questions
         const btn = document.querySelector(`button[data-index="${currentQuestionIndex}"]`);
@@ -221,12 +216,16 @@ function handleAnswerSelection(event) {
 
 
 
-
     // ✅ Display Answer Options
     const optionsContainer = document.querySelector(".options");
     
     function updateQuestion() {
         if (!questions.length) return;
+    
+        if (!questions || !questions.length) {
+            console.error("❌ Error: No questions available!");
+            return;
+        }
     
         const question = questions[currentQuestionIndex];
         document.getElementById("question").innerHTML = `Q${currentQuestionIndex + 1}: ` + question.question_text;
@@ -249,23 +248,21 @@ function handleAnswerSelection(event) {
         optionsContainer.innerHTML = "";
     
         if (question.type === "MCQ") {
-            question.options.forEach((option, index) => {
+            Object.entries(question.options).forEach(([key, value]) => {
                 const optionElement = document.createElement("label");
                 optionElement.innerHTML = `
-                    <input type="radio" name="question${currentQuestionIndex}" value="${index + 1}"
-                        ${savedAnswer === index + 1 ? "checked" : ""}> ${option}
+                    <input type="radio" name="question${currentQuestionIndex}" value="${parseInt(key)}" 
+                        ${savedAnswer === parseInt(key) ? "checked" : ""}> ${value}
                 `;
                 optionsContainer.appendChild(optionElement);
             });
         } else {
             optionsContainer.innerHTML = `
                 <label>Enter your answer:</label>
-                <input type="number" name="question${currentQuestionIndex}" min="0" max="99999" 
-                    value="${savedAnswer !== null ? savedAnswer : ''}">
+                <input type="number" name="question${currentQuestionIndex}" min="0" max="99999" value="${savedAnswer !== null ? savedAnswer : ''}">
             `;
         }
     }
-    
     
 
 // ✅ Submit Test Function (Updated)
@@ -280,8 +277,11 @@ async function submitTest() {
         return;
     }
 
+    // Fetch answers from localStorage
     const answers = JSON.parse(localStorage.getItem("userAnswers")) || {};
-    if (!answers || Object.keys(answers).length === 0) {
+
+    if (!answers || Object.keys(answers).length === 0 || 
+        Object.values(answers).every(ans => ans === null || ans === undefined || ans === "")) {
         alert("⚠ You haven't answered any questions. Please attempt at least one before submitting.");
         return;
     }
@@ -290,36 +290,31 @@ async function submitTest() {
     document.getElementById("submit-btn").textContent = "Submitting...";
 
     try {
-        const response = await fetch(`${API_BASE_URL}/save-attempt`, {
+        const response = await fetch(`${API_BASE_URL}/attempts/submit`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             },
             body: JSON.stringify({
-                user_id,
+                user_id, 
                 user_name,
-                exam_year: year,
-                exam_slot: slot,
+                year, 
+                slot, 
                 answers
             })
         });
 
-        if (!response.ok) {
-            throw new Error("Failed to save answers.");
-        }
-
-
-        alert("✅ Answers stored in database successfully!");
-
+        const data = await response.json();
+        alert(`✅ Test Submitted!`);
         window.location.href = "results.html";
     } catch (error) {
         console.error("❌ Error submitting test:", error);
         alert("❌ Submission failed! Please retry.");
+        document.getElementById("submit-btn").textContent = "Submit Test";
     }
 }
 
-document.getElementById("submit-btn")?.addEventListener("click", submitTest);
 
 // ✅ Event Listeners for Navigation
 document.addEventListener("DOMContentLoaded", () => {
@@ -362,6 +357,10 @@ function autoSaveAnswers() {
         localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
     }, 5000); // Auto-save every 5 seconds
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    autoSaveAnswers();
+});
 
 
 
