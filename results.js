@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/exam/results`, {
+        const response = await fetch(`${API_BASE_URL}/attempts/results`, {
             method: "POST", // ✅ Ensure using POST instead of query params in GET
             headers: {
                 "Content-Type": "application/json",
