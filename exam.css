@@ -1,230 +1,195 @@
-/* 🌎 General Styling */
+/* General Styling */
 body {
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f8f9fa; /* Light gray background */
-  color: #333;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-/* 🏆 Header */
-.header {
-  background: #0e0e10; /* Linear-inspired dark theme */
-  color: white;
-  padding: 12px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.header .logo a {
-  text-decoration: none;
-  color: white;
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.header ul {
-  list-style: none;
-  display: flex;
-  margin: 0;
-  padding: 0;
-}
-
-.header ul li {
-  margin: 0 12px;
-}
-
-.header ul li a {
-  color: white;
-  text-decoration: none;
-  padding: 6px 12px;
-  font-weight: 500;
-  transition: 0.3s;
-}
-
-.header ul li a:hover {
-  text-decoration: underline;
-  color: #38bdf8;
-}
-
-/* 🔥 Logout Button */
-.header .logout {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(90deg, #1e90ff, #00bcd4); /* A blue gradient */
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+  }
+  
+  .header .logo a {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .header ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  .header ul li {
+    margin: 0 10px;
+  }
+  
+  .header ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
+  }
+  
+  .header ul li a:hover {
+    text-decoration: underline;
+    color: #f0db4f;
+  }
+  
+  /* Align Logout to the right */
+  .header .logout {
   font-size: 16px;
   text-decoration: none;
   color: white;
   font-weight: bold;
   transition: color 0.3s;
-}
-
-.header .logout:hover {
-  color: #38bdf8;
-}
-
-/* ⏳ Timer Section */
-.timer-section {
-  text-align: right;
-  padding: 10px 20px;
-  background: #1a1a1d;
-  color: white;
-  font-size: 16px;
-  font-weight: 500;
-}
-
-/* 🎯 Main Test Layout */
-.test-container {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  height: calc(100vh - 100px);
-}
-
-/* 📌 Question Panel */
-.question-panel {
-  flex: 3;
-  padding: 24px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
-  overflow-y: auto;
-}
-
-/* Question Styling */
-.question-panel h3 {
-  margin-bottom: 20px;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-#question-image {
-  max-width: 100%;
-  margin: 20px 0;
-  display: none;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
-}
-
-/* 🏷️ Options Styling */
-.options label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 16px;
-  padding: 12px;
-  border-radius: 8px;
-  transition: background 0.2s;
-  cursor: pointer;
-}
-
-.options input[type="radio"]:checked + label,
-.options input[type="number"]:focus {
-  background: #38bdf8;
-  color: white;
-  font-weight: bold;
-}
-
-/* 📜 Navigation Panel */
-.navigation-panel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background: #121214; /* Dark navigation sidebar */
-  color: white;
-  border-radius: 12px;
-  width: 260px;
-  height: 100%;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* ⏩ Question Navigation Buttons */
-.question-buttons {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
-  justify-content: center;
-  padding: 10px;
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-/* 🎯 Question Buttons */
-.nav-btn {
-  width: 44px;
-  height: 44px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  background-color: #e5e7eb; /* Default unread */
-  color: #333;
-}
-
-/* Hover effect */
-.nav-btn:hover {
-  transform: scale(1.08);
-}
-
-/* ✅ Answered */
-.nav-btn.answered {
-  background-color: #22c55e;
-  color: white;
-}
-
-/* 🔘 Read but not answered */
-.nav-btn.read {
-  background-color: #94a3b8;
-  color: white;
-}
-
-/* ⚪ Unread */
-.nav-btn.unread {
-  background-color: #e5e7eb;
-  color: #333;
-}
-
-/* ⏭️ Navigation Buttons */
-#prev-btn, #next-btn, #submit-btn {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-#prev-btn:hover, #next-btn:hover, #submit-btn:hover {
-  background: #1d4ed8;
-}
-
-/* 🚫 Disabled Buttons */
-#prev-btn:disabled, #next-btn:disabled {
-  background: #e5e7eb;
-  color: #6b7280;
-  cursor: not-allowed;
-}
-
-/* 🚀 Submit Button */
-#submit-btn {
-  background: #f43f5e;
-}
-
-#submit-btn:hover {
-  background: #e11d48;
-}
-
-/* 📜 Submit Section */
-.submit-section {
-  text-align: center;
-  padding: 20px;
-  background: #1f2937;
-  color: white;
-}
+  }
+  
+  .header .logout:hover {
+  color: #f0db4f;
+  }
+  /* Timer Section */
+  .timer-section {
+    text-align: right;
+    padding: 5px;
+    background: #444;
+    color: white;
+    font-size: 14px;
+  }
+  
+  /* Test Content */
+  .test-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    flex: 1;
+  }
+  
+  .question-panel {
+    flex: 3;
+    margin-right: 20px;
+  }
+  
+  .question-panel h3 {
+    margin-bottom: 20px;
+  }
+  
+  .options label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  
+  .navigation-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 15px;
+    border-radius: 10px;
+    background: #f5f5f5;  /* Light gray background for contrast */
+    max-height: 450px; /* Limit height */
+    overflow-y: auto; /* Enables vertical scrolling */
+    width: 220px; /* Fixed width */
+  }
+  
+  .question-buttons {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 buttons per row */
+    gap: 8px; /* Reduces spacing between buttons */
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    max-height: 400px; /* Keep buttons inside the panel */
+    overflow-y: auto; /* Enables scroll if needed */
+  }
+  
+  .nav-btn {
+    width: 40px;  /* Ensures a fixed width for better alignment */
+    height: 40px; /* Same height as width */
+    text-align: center;
+    background-color: #FFD700;
+    border: 1px solid black;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: 0.2s all ease-in-out;
+  }
+  
+  .nav-btn:hover {
+    background-color: #FFA500; /* Change color when hovered */
+    transform: scale(1.1); /* Slight zoom */
+  }
+  
+  .nav-btn.selected {
+    background-color: #4CAF50; /* Green background for selected */
+    color: white;
+    font-weight: bold;
+  }  
+  .nav-btn.active {
+    background-color: #f0db4f;
+    color: black;
+  }  
+  .navigation-buttons {
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px; /* Add space between buttons and options */
+    margin-bottom: 20px; /* Add space before the navigation panel */
+  }
+  
+  .navigation-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 15px;
+    border-radius: 10px;
+    background: #f5f5f5;  /* Light gray background for contrast */
+    max-height: 450px; /* Limit height */
+    overflow-y: auto; /* Enables vertical scrolling */
+    width: 250px; /* Increase width for better layout */
+    white-space: nowrap; /* Prevents unnecessary wrapping */
+  }
+  
+  #prev-btn, #next-btn, #submit-btn {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }  
+  
+  #prev-btn:hover, #next-btn:hover, #submit-btn:hover {
+    background: #45a049;
+  }
+  
+  #prev-btn:disabled, #next-btn:disabled {
+    background: #ddd; /* Gray for disabled buttons */
+    color: #888;
+    cursor: not-allowed;
+  }
+  
+  /* Submit Section */
+  .submit-section {
+    text-align: center;
+    padding: 20px;
+    background: #333;
+  }
+  
