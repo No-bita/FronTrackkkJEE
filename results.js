@@ -1,3 +1,5 @@
+const API_BASE_URL = "https://backend-q2xl.onrender.com/api";
+
 document.addEventListener("DOMContentLoaded", async () => {
     const user_id = localStorage.getItem("user_id");
     const year = localStorage.getItem("exam_year");
