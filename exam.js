@@ -18,6 +18,9 @@ if (!year || !slot) {
 document.addEventListener("DOMContentLoaded", async () => {
     await fetchQuestions();
     setupEventListeners();
+
+    const savedAnswers = JSON.parse(localStorage.getItem("userAnswers")) || {};
+    userAnswers = savedAnswers;
 });
 
 // ✅ Fetch Questions from the Backend
@@ -196,7 +199,11 @@ document.addEventListener("input", handleAnswerSelection);
 
 function handleAnswerSelection(event) {
     if (event.target.type === "radio" || event.target.type === "number") {
-        userAnswers[currentQuestionIndex] = event.target.value;
+        const questionId = questions[currentQuestionIndex]._id; // Get the question ID
+        const selectedValue = event.target.type === "radio" ? parseInt(event.target.value) : parseInt(event.target.value);
+
+        userAnswers[questionId] = selectedValue; // Store response in userAnswers object
+        localStorage.setItem("userAnswers", JSON.stringify(userAnswers)); // Persist to localStorage
 
         // ✅ Change button color to Green for answered questions
         const btn = document.querySelector(`button[data-index="${currentQuestionIndex}"]`);
@@ -206,6 +213,7 @@ function handleAnswerSelection(event) {
         }
     }
 }
+
 
 
     // ✅ Display Answer Options
@@ -262,12 +270,13 @@ async function submitTest() {
         return;
     }
 
-    const answers = collectAnswers();
-    
+    // Fetch answers from localStorage
+    const answers = JSON.parse(localStorage.getItem("userAnswers")) || {};
+
     if (!answers || Object.keys(answers).length === 0 || 
-    Object.values(answers).every(ans => ans === null || ans === undefined || ans === "")) {
-    alert("⚠ You haven't answered any questions. Please attempt at least one before submitting.");
-    return;
+        Object.values(answers).every(ans => ans === null || ans === undefined || ans === "")) {
+        alert("⚠ You haven't answered any questions. Please attempt at least one before submitting.");
+        return;
     }
 
     clearInterval(timerInterval);
@@ -282,22 +291,23 @@ async function submitTest() {
             },
             body: JSON.stringify({
                 user_id, 
-                user_name, // Personalization
+                user_name,
                 year, 
                 slot, 
-                answers 
+                answers
             })
         });
 
         const data = await response.json();
         alert(`✅ Test Submitted!`);
-        window.location.href = "results.html"; // Redirect to results page
+        window.location.href = "results.html";
     } catch (error) {
         console.error("❌ Error submitting test:", error);
         alert("❌ Submission failed! Please retry.");
         document.getElementById("submit-btn").textContent = "Submit Test";
     }
 }
+
 
 // ✅ Event Listeners for Navigation
 document.addEventListener("DOMContentLoaded", () => {
@@ -334,6 +344,17 @@ function startCountdown() {
 }
 
 startCountdown(); // ✅ Start the timer countdown
+
+function autoSaveAnswers() {
+    setInterval(() => {
+        localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+    }, 5000); // Auto-save every 5 seconds
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    autoSaveAnswers();
+});
+
 
 // ✅ Apply Button Colors via CSS
 const style = document.createElement("style");
