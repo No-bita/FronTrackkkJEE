@@ -45,6 +45,7 @@ async function fetchQuestions() {
     } catch (error) {
         console.error("❌ Error fetching questions:", error);
         document.getElementById("question").innerHTML = `<p style="color:red;">Failed to load questions. <button onclick="fetchQuestions()">Retry</button></p>`;
+        document.getElementById("retry-btn").style.display = "block";
     }
 }
 
@@ -61,22 +62,21 @@ function generateQuestionButtons() {
 
     container.innerHTML = ""; // Clear previous buttons
 
+    if (container.childElementCount === questions.length) return;
+
     questions.forEach((_, index) => {
         const button = document.createElement("button");
-        button.className = "nav-btn";
+        button.className = "nav-btn unread";
         button.textContent = index + 1;
         button.setAttribute("data-index", index);
         button.onclick = () => {
             goToQuestion(index);
-            button.classList.remove("unread");
-            button.classList.add("read"); // Mark as visited
+            button.classList.replace("unread", "read");
         };
         container.appendChild(button);
     });
-
-    container.style.overflowX = "auto"; // Enable horizontal scrolling
-    container.style.whiteSpace = "nowrap"; // Prevent line breaks
 }
+
 
 // ✅ Navigation Functions
 function goToQuestion(index) {
@@ -90,58 +90,45 @@ function goToQuestion(index) {
 function setupEventListeners() {
     console.log("✅ Event Listeners Set Up");
 
-    const logoutBtn = document.getElementById("logout-btn");
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => {
-            localStorage.removeItem("token");
-            window.location.href = "dashboard.html";
-        });
-    }
+    document.getElementById("logout-btn")?.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        window.location.href = "dashboard.html";
+    });
 
-    const prevBtn = document.getElementById("prev-btn");
-    const nextBtn = document.getElementById("next-btn");
-    const submitBtn = document.getElementById("submit-btn");
+    document.getElementById("prev-btn")?.addEventListener("click", () => {
+        if (currentQuestionIndex > 0) { 
+            goToQuestion(currentQuestionIndex - 1);
+        }
+    });
 
-    if (prevBtn && nextBtn && submitBtn) {
-        prevBtn.addEventListener("click", () => {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                updateQuestion();
-            }
-        });
+    document.getElementById("next-btn")?.addEventListener("click", () => {
+        if (currentQuestionIndex < questions.length - 1) {
+            goToQuestion(currentQuestionIndex + 1);
+        }
+    });
 
-        nextBtn.addEventListener("click", () => {
-            if (currentQuestionIndex < questions.length - 1) {
-                currentQuestionIndex++;
-                updateQuestion();
-            }
-        });
-
-        submitBtn.addEventListener("click", () => {
-            if (confirm("Are you sure you want to submit the test?")) {
-                submitTest();
-            }
-        });
-    }
+    document.getElementById("submit-btn")?.addEventListener("click", () => {
+        if (confirm("Are you sure you want to submit the test?")) submitTest();
+    });
 }
 
 // ✅ Collect Answers from User Inputs
 function collectAnswers() {
     const answers = {};
+    const optionContainers = document.querySelectorAll(".options");
+        if (!optionsContainer) {
+            console.error("❌ Error: options container not found!");
+            return;
+        }
 
-    document.querySelectorAll(".options").forEach((optionContainer, index) => {
-        const questionId = questions[index]._id; // Get question ID from backend
+    for (const [index, optionContainer] of optionContainers.entries()) {
+        const questionId = questions[index]._id;
         const selectedOption = optionContainer.querySelector("input[type='radio']:checked");
         const enteredInteger = optionContainer.querySelector("input[type='number']");
 
-        if (selectedOption) {
-            answers[questionId] = parseInt(selectedOption.value);
-        } else if (enteredInteger && enteredInteger.value !== "") {
-            answers[questionId] = parseInt(enteredInteger.value);
-        } else {
-            answers[questionId] = null; // No response
-        }
-    });
+        answers[questionId] = selectedOption ? parseInt(selectedOption.value) :
+                             enteredInteger && enteredInteger.value !== "" ? parseInt(enteredInteger.value) : null;
+    }
 
     return answers;
 }
@@ -165,6 +152,7 @@ function startTimer() {
         return;
     }
 
+    clearInterval(timerInterval); // Clear any existing timers
     updateTimerDisplay(); // Show initial time
 
     timerInterval = setInterval(() => {
@@ -208,33 +196,37 @@ function handleAnswerSelection(event) {
 }
 
 
-
-// ✅ Update Question Display
-function updateQuestion() {
-    if (!questions.length) return;
-
-    const question = questions[currentQuestionIndex];
-    document.getElementById("question").innerHTML = `Q${currentQuestionIndex + 1}: ` + question.question_text;
-
-    // ✅ Show question image if available
-    const questionImage = document.getElementById("question-image");
-    if (question?.image) {
-        questionImage.src = question.image;
-        questionImage.style.display = "inline-block";
-    } else {
-        questionImage.style.display = "none";
-    }
-
     // ✅ Display Answer Options
     const optionsContainer = document.querySelector(".options");
+    
+    function updateQuestion() {
+        if (!questions.length) return;
+
+        if (!questions || !questions.length) {
+            console.error("❌ Error: No questions available!");
+            return;
+        }
+    
+        const question = questions[currentQuestionIndex];
+        document.getElementById("question").innerHTML = `Q${currentQuestionIndex + 1}: ` + question.question_text;
+    
+        // ✅ Show question image if available
+        const questionImage = document.getElementById("question-image");
+        if (question?.image) {
+            questionImage.src = question.image;
+            questionImage.style.display = "inline-block";
+        } else {
+            questionImage.style.display = "none";
+        }
+
     optionsContainer.innerHTML = "";
 
     if (question.type === "MCQ") {
         Object.entries(question.options).forEach(([key, value]) => {
             const optionElement = document.createElement("label");
             optionElement.innerHTML = `
-                <input type="radio" name="question${currentQuestionIndex}" value="${key}" 
-                    ${userAnswers[currentQuestionIndex] === key ? "checked" : ""}> ${value}
+                <input type="radio" name="question${currentQuestionIndex}" value="${parseInt(key)}" 
+                    ${parseInt(userAnswers[currentQuestionIndex]) === parseInt(key) ? "checked" : ""}> ${value}
             `;
             optionsContainer.appendChild(optionElement);
         });
@@ -249,28 +241,32 @@ function updateQuestion() {
 // ✅ Submit Test Function
 function submitTest() {
     const answers = collectAnswers();
-
-    const answeredCount = Object.values(answers).filter(ans => ans !== null).length;
-    if (answeredCount === 0) {
-        alert("⚠ You haven't answered any questions. Please attempt at least one question before submitting.");
+    if (Object.values(answers).every(ans => ans === null)) {
+        alert("⚠ You haven't answered any questions. Please attempt at least one before submitting.");
         return;
     }
 
-    clearInterval(timerInterval); // Stop the timer
+    clearInterval(timerInterval);
+    document.getElementById("submit-btn").textContent = "Submitting...";
+
     fetch(`${API_BASE_URL}/exam/submit`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
-        body: JSON.stringify({ answers: collectAnswers() })
+        body: JSON.stringify({ examId, answers })
     })
     .then(response => response.json())
     .then(data => {
         alert(`✅ Test Submitted! Your Score: ${data.score}`);
-        window.location.href = "results.html"; // Redirect to home page
+        window.location.href = "results.html";
     })
-    .catch(error => console.error("❌ Error submitting test:", error));
+    .catch(error => {
+        console.error("❌ Error submitting test:", error);
+        alert("❌ Submission failed! Please retry.");
+        document.getElementById("submit-btn").textContent = "Submit Test";
+    });
 }
 
 // ✅ Event Listeners for Navigation
@@ -312,20 +308,9 @@ startCountdown(); // ✅ Start the timer countdown
 // ✅ Apply Button Colors via CSS
 const style = document.createElement("style");
 style.innerHTML = `
-    .nav-btn {
-        padding: 10px;
-        margin: 5px;
-        border: none;
-        cursor: pointer;
-        font-size: 14px;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-    }
-
-    .unread { background-color: #d3d3d3; color: black; } /* Light Grey for unread */
-    .read { background-color: #808080; color: white; } /* Dark Grey for visited */
-    .answered { background-color: #28a745; color: white; } /* Green for answered */
+    .nav-btn { padding: 10px; margin: 5px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 14px; }
+    .unread { background-color: #d3d3d3; color: black; }
+    .read { background-color: #808080; color: white; }
+    .answered { background-color: #28a745; color: white; }
 `;
-
 document.head.appendChild(style);
