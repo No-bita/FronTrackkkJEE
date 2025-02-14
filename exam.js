@@ -252,7 +252,8 @@ function handleAnswerSelection(event) {
 
 // ✅ Submit Test Function (Updated)
 async function submitTest() {
-    const user_id = localStorage.getItem("user_id");
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const user_id = userInfo?.id || null;
     const user_name = localStorage.getItem("user_name");
 
     if (!user_id) {

@@ -29,7 +29,6 @@ async function handleLogin(event) {
 
             // ✅ Store JWT token, user_id, and user_name in localStorage
             localStorage.setItem("token", data.token);
-            localStorage.setItem("user_id", user_id);
             localStorage.setItem("user_name", user_name);
             localStorage.setItem("userInfo", JSON.stringify(data.user)); // Keep full user info if needed
 
