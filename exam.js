@@ -62,7 +62,7 @@ function generateQuestionButtons() {
 
     container.innerHTML = ""; // Clear previous buttons
 
-    if (container.childElementCount === questions.length) return;
+    if (container.childElementCount >= questions.length) return;
 
     questions.forEach((_, index) => {
         const button = document.createElement("button");
@@ -71,7 +71,10 @@ function generateQuestionButtons() {
         button.setAttribute("data-index", index);
         button.onclick = () => {
             goToQuestion(index);
-            button.classList.replace("unread", "read");
+            button.classList.remove("unread");
+            if (!button.classList.contains("answered")) {
+                button.classList.add("read");
+            }
         };
         container.appendChild(button);
     });
@@ -116,7 +119,7 @@ function setupEventListeners() {
 function collectAnswers() {
     const answers = {};
     const optionContainers = document.querySelectorAll(".options");
-        if (!optionsContainer) {
+        if (!optionsContainer.length) {
             console.error("❌ Error: options container not found!");
             return;
         }
@@ -241,7 +244,7 @@ function handleAnswerSelection(event) {
 // ✅ Submit Test Function
 function submitTest() {
     const answers = collectAnswers();
-    if (Object.values(answers).every(ans => ans === null)) {
+    if (Object.values(answers).every(ans => ans === null || ans === undefined)) {
         alert("⚠ You haven't answered any questions. Please attempt at least one before submitting.");
         return;
     }
@@ -255,7 +258,7 @@ function submitTest() {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
-        body: JSON.stringify({ examId, answers })
+        body: JSON.stringify({ year, slot, answers })
     })
     .then(response => response.json())
     .then(data => {
