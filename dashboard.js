@@ -85,6 +85,9 @@ function setupQuizStart() {
                 alert("Please select a year and slot before starting the quiz.");
                 return;
             }
+            // ✅ Store Year and Slot in Local Storage for Future Use
+            localStorage.setItem("exam_year", selectedYear);
+            localStorage.setItem("exam_slot", selectedSlot);
 
             window.location.href = `exam.html?year=${selectedYear}&slot=${selectedSlot}`;
         });
