@@ -4,36 +4,34 @@ const API_BASE_URL = "https://backend-q2xl.onrender.com/api"; // Adjust this bas
 async function handleLogin(event) {
     event.preventDefault(); // Prevent form reload
 
-    // Get input values
+    // ✅ Get input values
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
-    // ✅ Validate inputs before sending request
-    if (!validateLoginInputs(email, password)) {
+    if (!email || !password) {
+        alert("Please enter your email and password.");
         return;
     }
 
     try {
-        // Send login request to backend
+        // ✅ Send login request to backend
         const response = await fetch(`${API_BASE_URL}/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ email, password })
         });
 
         const data = await response.json();
 
         if (response.ok) {
-            // ✅ Extract user_id and user_name from response
-            const { _id: user_id, name: user_name } = data.user; 
-
-            // ✅ Store JWT token, user_id, and user_name in localStorage
+            // ✅ Store JWT token & user info in localStorage
             localStorage.setItem("token", data.token);
-            localStorage.setItem("user_name", user_name);
-            localStorage.setItem("userInfo", JSON.stringify(data.user)); // Keep full user info if needed
+            localStorage.setItem("user_id", data.user.id); // 🔹 Store user ID
+            localStorage.setItem("user_name", data.user.name); // 🔹 Store user name
+            localStorage.setItem("userInfo", JSON.stringify(data.user)); // Store full user info
 
-            alert(`✅ Welcome, ${user_name}! Redirecting to dashboard...`);
-            window.location.href = "dashboard.html"; // Redirect user to dashboard
+            alert("✅ Login successful! Redirecting to dashboard...");
+            window.location.href = "dashboard.html";
         } else {
             showError("login-error", data.error || "Invalid email or password.");
         }
