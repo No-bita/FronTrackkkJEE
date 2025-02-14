@@ -283,7 +283,7 @@ async function submitTest() {
         });
 
         const data = await response.json();
-        alert(`✅ Test Submitted! Your Score: ${data.score}`);
+        alert(`✅ Test Submitted!`);
         window.location.href = "results.html"; // Redirect to results page
     } catch (error) {
         console.error("❌ Error submitting test:", error);
