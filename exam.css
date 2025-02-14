@@ -1,22 +1,24 @@
-/* General Styling */
+/* 🌎 General Styling */
 body {
-  font-family: 'Inter', sans-serif; /* Using Inter for a modern feel */
+  font-family: 'Inter', sans-serif;
   margin: 0;
-  background-color: #f8f9fa; /* Soft background */
+  padding: 0;
+  background-color: #f8f9fa; /* Light gray background */
   color: #333;
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 
-/* Header */
+/* 🏆 Header */
 .header {
-  background: #0e0e10; /* Dark background for a Linear-like UI */
+  background: #0e0e10; /* Linear-inspired dark theme */
   color: white;
   padding: 12px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .header .logo a {
@@ -50,43 +52,67 @@ body {
   color: #38bdf8;
 }
 
-/* Timer Section */
+/* 🔥 Logout Button */
+.header .logout {
+  font-size: 16px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.header .logout:hover {
+  color: #38bdf8;
+}
+
+/* ⏳ Timer Section */
 .timer-section {
   text-align: right;
   padding: 10px 20px;
-  background: #1a1a1d; /* Darker tone */
+  background: #1a1a1d;
   color: white;
   font-size: 16px;
   font-weight: 500;
 }
 
-/* Main Test Layout */
+/* 🎯 Main Test Layout */
 .test-container {
   display: flex;
   justify-content: space-between;
   padding: 20px;
-  height: 100%;
+  height: calc(100vh - 100px);
 }
 
-/* Question Panel */
+/* 📌 Question Panel */
 .question-panel {
   flex: 3;
   padding: 24px;
   background: white;
   border-radius: 12px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
+  overflow-y: auto;
 }
 
+/* Question Styling */
 .question-panel h3 {
   margin-bottom: 20px;
   font-size: 20px;
   font-weight: bold;
 }
 
+#question-image {
+  max-width: 100%;
+  margin: 20px 0;
+  display: none;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* 🏷️ Options Styling */
 .options label {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 16px;
   padding: 12px;
   border-radius: 8px;
@@ -96,18 +122,18 @@ body {
 
 .options input[type="radio"]:checked + label,
 .options input[type="number"]:focus {
-  background: #38bdf8; /* Soft blue */
+  background: #38bdf8;
   color: white;
   font-weight: bold;
 }
 
-/* Navigation Panel */
+/* 📜 Navigation Panel */
 .navigation-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  background: #121214; /* Dark theme */
+  background: #121214; /* Dark navigation sidebar */
   color: white;
   border-radius: 12px;
   width: 260px;
@@ -115,10 +141,10 @@ body {
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Question Navigation Buttons */
+/* ⏩ Question Navigation Buttons */
 .question-buttons {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5 buttons per row */
+  grid-template-columns: repeat(5, 1fr);
   gap: 6px;
   justify-content: center;
   padding: 10px;
@@ -126,7 +152,7 @@ body {
   overflow-y: auto;
 }
 
-/* Question Buttons */
+/* 🎯 Question Buttons */
 .nav-btn {
   width: 44px;
   height: 44px;
@@ -136,7 +162,7 @@ body {
   font-weight: bold;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  background-color: #e5e7eb; /* Default: unread */
+  background-color: #e5e7eb; /* Default unread */
   color: #333;
 }
 
@@ -145,25 +171,25 @@ body {
   transform: scale(1.08);
 }
 
-/* Answered */
+/* ✅ Answered */
 .nav-btn.answered {
-  background-color: #22c55e; /* Green for answered */
+  background-color: #22c55e;
   color: white;
 }
 
-/* Read but not answered */
+/* 🔘 Read but not answered */
 .nav-btn.read {
-  background-color: #94a3b8; /* Gray for visited */
+  background-color: #94a3b8;
   color: white;
 }
 
-/* Unread */
+/* ⚪ Unread */
 .nav-btn.unread {
   background-color: #e5e7eb;
   color: #333;
 }
 
-/* Navigation Buttons */
+/* ⏭️ Navigation Buttons */
 #prev-btn, #next-btn, #submit-btn {
   background: #2563eb;
   color: white;
@@ -179,14 +205,14 @@ body {
   background: #1d4ed8;
 }
 
-/* Disabled Buttons */
+/* 🚫 Disabled Buttons */
 #prev-btn:disabled, #next-btn:disabled {
   background: #e5e7eb;
   color: #6b7280;
   cursor: not-allowed;
 }
 
-/* Submit Button */
+/* 🚀 Submit Button */
 #submit-btn {
   background: #f43f5e;
 }
@@ -195,7 +221,7 @@ body {
   background: #e11d48;
 }
 
-/* Submit Section */
+/* 📜 Submit Section */
 .submit-section {
   text-align: center;
   padding: 20px;
