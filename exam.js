@@ -221,7 +221,7 @@ function handleAnswerSelection(event) {
     
     function updateQuestion() {
         if (!questions.length) return;
-
+    
         if (!questions || !questions.length) {
             console.error("❌ Error: No questions available!");
             return;
@@ -238,25 +238,32 @@ function handleAnswerSelection(event) {
         } else {
             questionImage.style.display = "none";
         }
-
-    optionsContainer.innerHTML = "";
-
-    if (question.type === "MCQ") {
-        Object.entries(question.options).forEach(([key, value]) => {
-            const optionElement = document.createElement("label");
-            optionElement.innerHTML = `
-                <input type="radio" name="question${currentQuestionIndex}" value="${parseInt(key)}" 
-                    ${parseInt(userAnswers[currentQuestionIndex]) === parseInt(key) ? "checked" : ""}> ${value}
+    
+        // ✅ Retrieve user's previous answer from localStorage
+        const savedAnswers = JSON.parse(localStorage.getItem("userAnswers")) || {};
+        const savedAnswer = savedAnswers[question._id] ?? null;
+    
+        // ✅ Display Answer Options
+        const optionsContainer = document.querySelector(".options");
+        optionsContainer.innerHTML = "";
+    
+        if (question.type === "MCQ") {
+            Object.entries(question.options).forEach(([key, value]) => {
+                const optionElement = document.createElement("label");
+                optionElement.innerHTML = `
+                    <input type="radio" name="question${currentQuestionIndex}" value="${parseInt(key)}" 
+                        ${savedAnswer === parseInt(key) ? "checked" : ""}> ${value}
+                `;
+                optionsContainer.appendChild(optionElement);
+            });
+        } else {
+            optionsContainer.innerHTML = `
+                <label>Enter your answer:</label>
+                <input type="number" name="question${currentQuestionIndex}" min="0" max="99999" value="${savedAnswer !== null ? savedAnswer : ''}">
             `;
-            optionsContainer.appendChild(optionElement);
-        });
-    } else {
-        optionsContainer.innerHTML = `
-            <label>Enter your answer:</label>
-            <input type="number" name="question${currentQuestionIndex}" min="0" max="99999">
-        `;
+        }
     }
-}
+    
 
 // ✅ Submit Test Function (Updated)
 async function submitTest() {
@@ -354,6 +361,7 @@ function autoSaveAnswers() {
 document.addEventListener("DOMContentLoaded", () => {
     autoSaveAnswers();
 });
+
 
 
 // ✅ Apply Button Colors via CSS
