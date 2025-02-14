@@ -119,7 +119,7 @@ function setupEventListeners() {
 function collectAnswers() {
 
     const optionContainers = document.querySelectorAll(".options");
-        if (!optionsContainer.length) {
+        if (!optionContainers.length) {
             console.error("❌ Error: options container not found!");
             return;
         }
@@ -246,7 +246,7 @@ function handleAnswerSelection(event) {
 }
 
 // ✅ Submit Test Function
-function submitTest() {
+async function submitTest() {
     const answers = collectAnswers();
     if (Object.values(answers).every(ans => ans === null || ans === undefined)) {
         alert("⚠ You haven't answered any questions. Please attempt at least one before submitting.");
@@ -255,32 +255,31 @@ function submitTest() {
 
     clearInterval(timerInterval);
     document.getElementById("submit-btn").textContent = "Submitting...";
+    try {
+        const response = await fetch(`${API_BASE_URL}/exam/submit`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+            body: JSON.stringify({ year, slot, answers })
+        });
 
-    fetch(`${API_BASE_URL}/exam/submit`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
-        },
-        body: JSON.stringify({ year, slot, answers })
-    })
-    .then(response => response.json())
-    .then(data => {
+        const data = await response.json();
         alert(`✅ Test Submitted! Your Score: ${data.score}`);
         window.location.href = "results.html";
-    })
-    .catch(error => {
+    } catch (error) {
         console.error("❌ Error submitting test:", error);
         alert("❌ Submission failed! Please retry.");
         document.getElementById("submit-btn").textContent = "Submit Test";
-    });
+    }
 }
 
 // ✅ Event Listeners for Navigation
 document.addEventListener("DOMContentLoaded", () => {
     startTimer();
 
-    document.getElementById("submit-btn").addEventListener("click", () => {
+    document.getElementById("submit-btn")?.addEventListener("click", () => {
         submitTest();
     });
 
