@@ -290,7 +290,7 @@ async function submitTest() {
     document.getElementById("submit-btn").textContent = "Submitting...";
 
     try {
-        const response = await fetch(`${API_BASE_URL}/attempts/submit`, {
+        const response = await fetch(`${API_BASE_URL}/save-attempt`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -305,17 +305,21 @@ async function submitTest() {
             })
         });
 
-        const data = await response.json();
-        alert(`✅ Test Submitted!`);
+        if (!response.ok) {
+            throw new Error("Failed to save answers.");
+        }
+
+
+        alert("✅ Answers stored in database successfully!");
+
         window.location.href = "results.html";
     } catch (error) {
         console.error("❌ Error submitting test:", error);
         alert("❌ Submission failed! Please retry.");
-        document.getElementById("submit-btn").textContent = "Submit Test";
     }
 }
 
-
+document.getElementById("submit-btn")?.addEventListener("click", submitTest);
 
 // ✅ Event Listeners for Navigation
 document.addEventListener("DOMContentLoaded", () => {
