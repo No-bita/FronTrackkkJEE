@@ -117,23 +117,27 @@ function setupEventListeners() {
 
 // ✅ Collect Answers from User Inputs
 function collectAnswers() {
-    const answers = {};
+
     const optionContainers = document.querySelectorAll(".options");
         if (!optionsContainer.length) {
             console.error("❌ Error: options container not found!");
             return;
         }
 
-    for (const [index, optionContainer] of optionContainers.entries()) {
-        const questionId = questions[index]._id;
-        const selectedOption = optionContainer.querySelector("input[type='radio']:checked");
-        const enteredInteger = optionContainer.querySelector("input[type='number']");
+        const answers = {};
 
-        answers[questionId] = selectedOption ? parseInt(selectedOption.value) :
-                             enteredInteger && enteredInteger.value !== "" ? parseInt(enteredInteger.value) : null;
-    }
-
-    return answers;
+        optionContainers.forEach((optionContainer, index) => {
+            if (!questions[index]) return; // Avoid accessing undefined questions
+    
+            const questionId = questions[index]._id;
+            const selectedOption = optionContainer.querySelector("input[type='radio']:checked");
+            const enteredInteger = optionContainer.querySelector("input[type='number']");
+    
+            answers[questionId] = selectedOption ? parseInt(selectedOption.value) :
+                                 enteredInteger && enteredInteger.value !== "" ? parseInt(enteredInteger.value) : null;
+        });
+    
+        return answers;
 }
 
 // ✅ Timer Functionality with Auto-Save & Page Refresh Handling
