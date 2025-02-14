@@ -4,16 +4,15 @@ let currentQuestionIndex = 0;
 let userAnswers = {};    
 let timerInterval;
 
-// Step 1: Extract year and slot from URL
-const urlParams = new URLSearchParams(window.location.search);
-const year = urlParams.get("year");
-const slot = urlParams.get("slot");
+document.addEventListener("DOMContentLoaded", function () {
+    const year = localStorage.getItem("exam_year");
+    const slot = localStorage.getItem("exam_slot");
 
-if (!year || !slot) {
-    alert("Invalid Year or Slot. Please go back and try again.");
-    window.location.href = "dashboard.html"; // Redirect to homepage if missing parameters
-}
-
+    if (!year || !slot) {
+        alert("Invalid Year or Slot. Please go back and try again.");
+        window.location.href = "dashboard.html"; // Redirect to homepage if missing parameters
+    }
+});
 // Fetch Questions from Backend
 document.addEventListener("DOMContentLoaded", async () => {
     await fetchQuestions();
