@@ -1,7 +1,7 @@
 const API_BASE_URL = "https://backend-q2xl.onrender.com/api";
 let questions = [];
 let currentQuestionIndex = 0;
-let userAnswers = JSON.parse(localStorage.getItem("userAnswers")) || {};    
+let userAnswers = {};    
 let timerInterval;
 
 // Step 1: Extract year and slot from URL
