@@ -116,7 +116,7 @@ function setupEventListeners() {
 
     document.getElementById("submit-btn")?.addEventListener("click", () => {
         if (confirm("Are you sure you want to submit the test?")) submitTest();
-    });
+    }, { once: true });
 }
 
 // ✅ Collect Answers from User Inputs
