@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const savedAnswers = JSON.parse(localStorage.getItem("userAnswers")) || {};
     userAnswers = savedAnswers;
+    updateQuestion();
 });
 
 // ✅ Fetch Questions from the Backend
