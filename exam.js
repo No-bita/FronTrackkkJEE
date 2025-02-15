@@ -6,8 +6,8 @@ let timerInterval;
 
 // Step 1: Extract year and slot from URL
 const urlParams = new URLSearchParams(window.location.search);
-const exam_year = urlParams.get("exam_year");
-const exam_slot = urlParams.get("exam_slot");
+const exam_year = urlParams.get("year");
+const exam_slot = urlParams.get("slot");
 
 if (!exam_year || !exam_slot) {
     alert("Invalid Year or Slot. Please go back and try again.");
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function fetchQuestions() {
     try {
         const slotFormatted = exam_slot.replace(/\s+/g, "_"); // ✅ Convert spaces to underscores
-        const response = await fetch(`${API_BASE_URL}/questions?exam_year=${exam_year}&exam_slot=${slotFormatted}`, {
+        const response = await fetch(`${API_BASE_URL}/questions?year=${exam_year}&slot=${slotFormatted}`, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         });
 
