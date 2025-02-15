@@ -14,6 +14,13 @@ if (!year || !slot) {
     window.location.href = "dashboard.html"; // Redirect to homepage if missing parameters
 }
 
+function autoSaveAnswers() {
+    setInterval(() => {
+        localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+    }, 5000); // Auto-save every 5 seconds
+}
+
+
 // Fetch Questions from Backend
 document.addEventListener("DOMContentLoaded", async () => {
     await fetchQuestions();
@@ -22,7 +29,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const savedAnswers = JSON.parse(localStorage.getItem("userAnswers")) || {};
     userAnswers = savedAnswers;
     updateQuestion();
+    autoSaveAnswers();
 });
+
+
 
 // ✅ Fetch Questions from the Backend
 async function fetchQuestions() {
@@ -352,16 +362,6 @@ function startCountdown() {
 }
 
 startCountdown(); // ✅ Start the timer countdown
-
-function autoSaveAnswers() {
-    setInterval(() => {
-        localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
-    }, 5000); // Auto-save every 5 seconds
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    autoSaveAnswers();
-});
 
 
 
