@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://backend-q2xl.onrender.com";
+const API_BASE_URL = "https://backend-q2xl.onrender.com/api";
 let questions = [];
 let currentQuestionIndex = 0;
 let userAnswers = {};    
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function fetchQuestions() {
     try {
         const slotFormatted = slot.replace(/\s+/g, "_"); // ✅ Convert spaces to underscores
-        const response = await fetch(`${API_BASE_URL}/api/questions?year=${year}&slot=${slotFormatted}`, {
+        const response = await fetch(`${API_BASE_URL}/questions?year=${year}&slot=${slotFormatted}`, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         });
 
@@ -291,7 +291,7 @@ async function submitTest() {
     document.getElementById("submit-btn").textContent = "Submitting...";
 
     try {
-        const response = await fetch(`${API_BASE_URL}/save-attempt`, {
+        const response = await fetch(`${API_BASE_URL}/attempts/save-attempt`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
