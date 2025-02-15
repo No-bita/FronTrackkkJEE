@@ -6,8 +6,8 @@ let timerInterval;
 
 // Step 1: Extract year and slot from URL
 const urlParams = new URLSearchParams(window.location.search);
-const year = urlParams.get("year");
-const slot = urlParams.get("slot");
+const exam_year = urlParams.get("year");
+const exam_slot = urlParams.get("slot");
 
 if (!year || !slot) {
     alert("Invalid Year or Slot. Please go back and try again.");
