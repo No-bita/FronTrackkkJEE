@@ -300,8 +300,8 @@ async function submitTest() {
             body: JSON.stringify({
                 user_id, 
                 user_name,
-                year, 
-                slot, 
+                exam_year, 
+                exam_slot, 
                 answers
             })
         });
