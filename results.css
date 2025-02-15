@@ -1,89 +1,83 @@
+/* 🌈 Styles for Results Page */
 body {
     font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    background-color: #f3f6fc;
+    margin: 20px;
+    background: linear-gradient(to right, #e0f7fa, #e1bee7);
     color: #333;
 }
 
+/* 📊 Summary Container */
 .summary-container {
-    margin: 20px auto;
-    max-width: 400px;
-    background: #ffffff;
+    margin-bottom: 30px;
     padding: 20px;
+    border: 2px solid #0288d1;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    background-color: #f3f4f6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .summary-container h1 {
-    color: #007BFF;
     margin-bottom: 20px;
+    color: #0288d1;
 }
 
+/* 🔍 Question Review */
 .question-review {
-    margin: 30px auto;
-    max-width: 600px;
-    text-align: left;
-}
-
-.question-card {
-    background-color: #fff;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    margin: 15px 0;
     padding: 20px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    border: 2px solid #7b1fa2;
+    border-radius: 10px;
+    background-color: #f3e5f5;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.question-text {
+#question-text {
+    font-size: 1.2em;
     margin-bottom: 15px;
+    color: #6a1b9a;
 }
 
-.option {
-    margin: 5px 0;
-    padding: 10px;
-    border-radius: 5px;
+/* 🧠 Status Indicators */
+.correct {
+    color: #388e3c;
+    font-weight: bold;
 }
 
-.option.correct {
-    background-color: #28a745;
-    color: white;
+.incorrect {
+    color: #d32f2f;
+    font-weight: bold;
 }
 
-.option.incorrect {
-    background-color: #dc3545;
-    color: white;
+.unattempted {
+    color: #616161;
+    font-weight: bold;
 }
 
-.option.unattempted {
-    background-color: #6c757d;
-    color: white;
-}
-
+/* 🧭 Navigation Buttons */
 .navigation {
     margin-top: 20px;
     display: flex;
-    justify-content: center;
-    gap: 15px;
+    justify-content: space-between;
 }
 
 .navigation button {
     padding: 10px 20px;
-    cursor: pointer;
     border: none;
     border-radius: 5px;
-    background-color: #007BFF;
+    cursor: pointer;
     color: white;
-    font-size: 16px;
-    transition: background 0.3s ease;
+    transition: 0.3s;
 }
 
-.navigation button:disabled {
-    background-color: #6c757d;
+#prev-btn {
+    background-color: #f57c00;
+}
+
+#next-btn {
+    background-color: #4caf50;
+}
+
+#prev-btn:disabled,
+#next-btn:disabled {
+    background-color: #bdbdbd;
     cursor: not-allowed;
-}
-
-.navigation button:hover:not(:disabled) {
-    background-color: #0056b3;
 }
