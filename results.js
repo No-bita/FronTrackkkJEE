@@ -1,56 +1,86 @@
 const API_BASE_URL = "https://backend-q2xl.onrender.com/api";
 
-document.addEventListener("DOMContentLoaded", async () => {
-    const user_id = localStorage.getItem("user_id");
-    const year = localStorage.getItem("year");
-    const slot = localStorage.getItem("slot");
+let currentQuestionIndex = 0;
+let questions = [];
+let resultData = {};
 
-    if (!user_id || !year || !slot) {
-        alert("⚠ Missing exam data. Redirecting to dashboard.");
-        window.location.href = "dashboard.html";
+// 🔹 Fetch results when page loads
+document.addEventListener('DOMContentLoaded', async () => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    const examYear = localStorage.getItem('exam_year');
+    const examSlot = localStorage.getItem('exam_slot');
+
+    if (!userInfo || !examYear || !examSlot) {
+        alert("Missing required information. Please log in again.");
+        window.location.href = "login.html";
         return;
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/attempts/results`, {
-            method: "POST", // ✅ Ensure using POST instead of query params in GET
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem("token")}`
-            },
-            body: JSON.stringify({ user_id, year, slot })
+        const response = await fetch(`${API_BASE_URL}/results/calculate?user_id=${userInfo.id}&year=${examYear}&slot=${examSlot}`, {
+            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         });
 
-        if (!response.ok) throw new Error("⚠ Failed to fetch results");
+        if (!response.ok) {
+            throw new Error("Failed to fetch results");
+        }
 
-        const data = await response.json();
+        resultData = await response.json();
+        questions = resultData.answers;
 
-        // ✅ Update score display
-        document.getElementById("score").innerText = data.totalMarks;
-        document.getElementById("correct").innerText = data.correctAnswers;
-        document.getElementById("incorrect").innerText = data.incorrectAnswers;
-        document.getElementById("skipped").innerText = data.skipped;
-        document.getElementById("accuracy").innerText = `${data.accuracy}%`; // ✅ Add accuracy
-        document.getElementById("timeTaken").innerText = `${data.timeTaken} min`; // ✅ Add time taken
+        // Display summary
+        document.getElementById('total-questions').textContent = resultData.total_questions;
+        document.getElementById('correct-answers').textContent = resultData.correct;
+        document.getElementById('incorrect-answers').textContent = resultData.incorrect;
+        document.getElementById('unattempted-answers').textContent = resultData.unattempted;
+        document.getElementById('total-score').textContent = resultData.total_marks;
 
-        // ✅ Populate review table
-        const tableBody = document.getElementById("review-table");
-        tableBody.innerHTML = ""; // Clear any existing data
-
-        data.review.forEach((item, index) => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${item.question_text}</td>
-                <td>${item.your_answer || "⏺ Skipped"}</td>
-                <td>${item.correct_answer}</td>
-                <td>${item.status === "✅ Correct" ? "✅" : item.status === "❌ Incorrect" ? "❌" : "⚪ Skipped"}</td>
-            `;
-            tableBody.appendChild(row);
-        });
-
+        // Display first question
+        displayQuestion(currentQuestionIndex);
     } catch (error) {
-        console.error("❌ Error fetching results:", error);
-        alert("❌ Failed to load results. Please try again.");
+        console.error("Error loading results:", error);
+        alert("Failed to load results. Please try again.");
+    }
+});
+
+// 🔹 Display question
+function displayQuestion(index) {
+    const question = questions[index];
+    const questionDisplay = document.getElementById('question-display');
+
+    questionDisplay.innerHTML = `
+        <div class="question-card">
+            <div class="question-text">
+                <strong>Q${index + 1}:</strong> ${question.question_text}
+            </div>
+            <div class="option ${question.status}">
+                User Answer: ${question.user_answer !== null ? question.user_answer : "Not Attempted"}
+            </div>
+            <div class="option correct">
+                Correct Answer: ${question.correct_answer}
+            </div>
+            <div class="status">
+                <strong>Status:</strong> ${question.status.toUpperCase()}
+            </div>
+        </div>
+    `;
+
+    // Enable/disable buttons accordingly
+    document.getElementById('prev-btn').disabled = index === 0;
+    document.getElementById('next-btn').disabled = index === questions.length - 1;
+}
+
+// 🔹 Event listeners for navigation buttons
+document.getElementById('prev-btn').addEventListener('click', () => {
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        displayQuestion(currentQuestionIndex);
+    }
+});
+
+document.getElementById('next-btn').addEventListener('click', () => {
+    if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        displayQuestion(currentQuestionIndex);
     }
 });
