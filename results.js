@@ -15,7 +15,7 @@ async function fetchResults() {
     const encodedSlot = encodeURIComponent(slot);
 
     try {
-        const response = await fetch(`${API_BASE_URL}/results/calculate?user=${userId}&year=${year}&slot=${encodedSlot}`, {
+        const response = await fetch(`${API_BASE_URL}/results/calculate?user_id=${userId}&year=${year}&slot=${encodedSlot}`, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         });
 
