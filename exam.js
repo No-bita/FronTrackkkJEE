@@ -312,23 +312,23 @@ async function submitTest() {
     } catch (error) {
         console.error("❌ Error submitting test:", error);
         alert("❌ Submission failed! Please retry.");
-        document.getElementById("submit-btn").textContent = "Submit Test";
+        //document.getElementById("submit-btn").textContent = "Submit Test";
     }
 }
 
 
-// ✅ Event Listeners for Navigation
-document.addEventListener("DOMContentLoaded", () => {
-    startTimer();
+// // ✅ Event Listeners for Navigation
+// document.addEventListener("DOMContentLoaded", () => {
+//     startTimer();
 
-    document.getElementById("submit-btn")?.addEventListener("click", () => {
-        submitTest();
-    });
+//     document.getElementById("submit-btn")?.addEventListener("click", () => {
+//         submitTest();
+//     });
 
-    window.addEventListener("beforeunload", () => {
-        localStorage.setItem("timeLeft", timeLeft);
-    });
-});
+//     window.addEventListener("beforeunload", () => {
+//         localStorage.setItem("timeLeft", timeLeft);
+//     });
+// });
 
 
 
