@@ -2,8 +2,8 @@ const API_BASE_URL = "https://backend-q2xl.onrender.com/api";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const user_id = localStorage.getItem("user_id");
-    const year = localStorage.getItem("exam_year");
-    const slot = localStorage.getItem("exam_slot");
+    const year = localStorage.getItem("year");
+    const slot = localStorage.getItem("slot");
 
     if (!user_id || !year || !slot) {
         alert("⚠ Missing exam data. Redirecting to dashboard.");
