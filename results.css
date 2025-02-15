@@ -1,83 +1,35 @@
-/* 🌈 Styles for Results Page */
-body {
-    font-family: 'Arial', sans-serif;
-    margin: 20px;
-    background: linear-gradient(to right, #e0f7fa, #e1bee7);
-    color: #333;
-}
-
-/* 📊 Summary Container */
 .summary-container {
-    margin-bottom: 30px;
-    padding: 20px;
-    border: 2px solid #0288d1;
+    background-color: #d5eaf7;
+    border: 2px solid #0366d6;
     border-radius: 10px;
-    background-color: #f3f4f6;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    margin: 30px auto;
+    width: 60%;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 .summary-container h1 {
     margin-bottom: 20px;
-    color: #0288d1;
+    color: #034efc;
 }
 
-/* 🔍 Question Review */
-.question-review {
-    padding: 20px;
-    border: 2px solid #7b1fa2;
-    border-radius: 10px;
-    background-color: #f3e5f5;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+.button-container {
+    text-align: center;
+    margin-top: 30px;
 }
 
-#question-text {
-    font-size: 1.2em;
-    margin-bottom: 15px;
-    color: #6a1b9a;
-}
-
-/* 🧠 Status Indicators */
-.correct {
-    color: #388e3c;
-    font-weight: bold;
-}
-
-.incorrect {
-    color: #d32f2f;
-    font-weight: bold;
-}
-
-.unattempted {
-    color: #616161;
-    font-weight: bold;
-}
-
-/* 🧭 Navigation Buttons */
-.navigation {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.navigation button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+#view-details-btn {
+    padding: 15px 30px;
+    background-color: #28a745;
     color: white;
-    transition: 0.3s;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-#prev-btn {
-    background-color: #f57c00;
-}
-
-#next-btn {
-    background-color: #4caf50;
-}
-
-#prev-btn:disabled,
-#next-btn:disabled {
-    background-color: #bdbdbd;
-    cursor: not-allowed;
+#view-details-btn:hover {
+    background-color: #218838;
 }

@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📊 Exam Results</title>
-    <link rel="stylesheet" href="../styles/results.css">
+    <link rel="stylesheet" href="./results.css">
 </head>
 <body>
 
-    <!-- 🏆 Score Summary -->
+    <!-- 🎯 Score Summary -->
     <div class="summary-container">
         <h1>📊 Exam Results</h1>
         <p><strong>Total Questions:</strong> <span id="total-questions">-</span></p>
@@ -18,23 +18,13 @@
         <p><strong>🏆 Total Score:</strong> <span id="total-score">-</span></p>
     </div>
 
-    <!-- 🔍 Question Review Section -->
-    <div class="question-review">
-        <div id="question-display">
-            <h3 id="question-text"></h3>
-            <p><strong>Your Answer:</strong> <span id="your-answer"></span></p>
-            <p><strong>Correct Answer:</strong> <span id="correct-answer"></span></p>
-            <p><strong>Status:</strong> <span id="status"></span></p>
-        </div>
-
-        <!-- 🧭 Navigation Controls -->
-        <div class="navigation">
-            <button id="prev-btn" disabled>⬅️ Previous</button>
-            <button id="next-btn">Next ➡️</button>
-        </div>
+    <!-- 🧭 Button to View Detailed Results -->
+    <div class="button-container">
+        <button id="view-details-btn">🔍 View Detailed Results</button>
     </div>
 
     <!-- ⚙️ JavaScript -->
-    <script src="../js/results.js"></script>
+    <script src="./results.js"></script>
+
 </body>
 </html>
