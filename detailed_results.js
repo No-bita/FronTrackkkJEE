@@ -3,22 +3,6 @@ let questions = [];
 let currentQuestionIndex = 0;
 let userAnswers = {};    
 
-// Extract year and slot from URL
-const urlParams = new URLSearchParams(window.location.search);
-const year = urlParams.get("year");
-const slot = urlParams.get("slot");
-
-if (!year || !slot) {
-    alert("Invalid Year or Slot. Please go back and try again.");
-    window.location.href = "dashboard.html"; 
-}
-
-// Auto-save answers with event-based triggers
-function autoSaveAnswers() {
-    document.addEventListener("change", () => {
-        localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
-    });
-}
 
 // Fetch Questions from Backend
 document.addEventListener("DOMContentLoaded", async () => {
@@ -27,7 +11,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         setupEventListeners();
         userAnswers = JSON.parse(localStorage.getItem("userAnswers")) || {};
         updateQuestion();
-        autoSaveAnswers();
     } catch (error) {
         console.error("❌ Error during initialization:", error);
     }

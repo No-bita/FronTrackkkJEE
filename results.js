@@ -3,7 +3,7 @@ const API_BASE_URL = "https://backend-q2xl.onrender.com/api";
 // 🎯 Fetch Results from Backend and Populate Summary
 async function fetchResults() {
     try {
-        const response = await fetch(`${API_BASE_URL}/results/calculate?user_id=${localStorage.getItem("user_id")}&year=${localStorage.getItem("exam_year")}&slot=${localStorage.getItem("exam_slot")}`, {
+        const response = await fetch(`${API_BASE_URL}/results/calculate?user_id=${localStorage.getItem("user_id")}&year=${localStorage.getItem("year")}&slot=${localStorage.getItem("slot")}`, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         });
 
