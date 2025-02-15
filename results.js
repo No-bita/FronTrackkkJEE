@@ -1,20 +1,21 @@
 const API_BASE_URL = "https://backend-q2xl.onrender.com/api";
 
+// 🎯 Fetch Results
 async function fetchResults() {
     const userId = localStorage.getItem("user_id");
     const year = localStorage.getItem("year");
     const slot = localStorage.getItem("slot");
 
-    // ✅ Ensure slot is formatted correctly
-    const formattedSlot = slot.replace(/\s+/g, "_"); 
-
-    if (!userId || !year || !formattedSlot) {
+    if (!userId || !year || !slot) {
         alert("⚠️ Missing user ID, year, or slot. Please start the exam again.");
         return;
     }
 
+    // ✅ Encode slot to handle spaces
+    const encodedSlot = encodeURIComponent(slot);
+
     try {
-        const response = await fetch(`${API_BASE_URL}/results/calculate?user_id=${userId}&year=${year}&slot=${formattedSlot}`, {
+        const response = await fetch(`${API_BASE_URL}/results/calculate?user=${userId}&year=${year}&slot=${encodedSlot}`, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         });
 
@@ -25,25 +26,32 @@ async function fetchResults() {
 
         const data = await response.json();
         console.log("📊 Results:", data);
-                // 🛠️ Populate Summary
-                document.getElementById("total-questions").innerText = data.total_questions;
-                document.getElementById("correct-answers").innerText = data.correct;
-                document.getElementById("incorrect-answers").innerText = data.incorrect;
-                document.getElementById("unattempted-answers").innerText = data.unattempted;
-                document.getElementById("total-score").innerText = data.total_marks;
-        
-                // ✅ Store detailed answers for next page
-                localStorage.setItem("detailedAnswers", JSON.stringify(data.answers));
+
+        // 🛠️ Populate Summary
+        document.getElementById("total-questions").innerText = data.total_questions;
+        document.getElementById("correct-answers").innerText = data.correct;
+        document.getElementById("incorrect-answers").innerText = data.incorrect;
+        document.getElementById("unattempted-answers").innerText = data.unattempted;
+        document.getElementById("total-score").innerText = data.total_marks;
+
+        // ✅ Store detailed answers for next page
+        localStorage.setItem("detailedAnswers", JSON.stringify(data.answers));
+
     } catch (error) {
         console.error("❌ Error fetching results:", error);
         alert("⚠️ Failed to load results. Please try again later.");
     }
 }
 
-// 🚀 Redirect to Detailed Results
-document.getElementById("view-details-btn").addEventListener("click", () => {
-    window.location.href = "./detailed_results.html";
-});
+// 🚀 Initialize
+document.addEventListener("DOMContentLoaded", () => {
+    fetchResults();
 
-// 🟢 Initialize
-document.addEventListener("DOMContentLoaded", fetchResults);
+    // ✅ Add event listener only if button exists
+    const detailsBtn = document.getElementById("view-details-btn");
+    if (detailsBtn) {
+        detailsBtn.addEventListener("click", () => {
+            window.location.href = "detailedresults.html";
+        });
+    }
+});

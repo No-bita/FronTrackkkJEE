@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Detailed Exam Results</title>
+    <link rel="stylesheet" href="detailedresults.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.html">JEEBacktrack</a>
+      </div>
+      <ul>
+        <li><a href="#" id="logout-btn" class="logout">Logout</a></li> <!-- ✅ Now functional -->
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Test Content -->
+    <section class="test-container">
+      <div class="question-panel">
+        <h3 id="question">Loading question...</h3>
+        <img id="question-image" src="" alt="Question Diagram" style="max-width: 100%; margin: 20px 0; display: none;">
+        <div class="options"></div>
+      </div>
+      <div class="navigation-panel">
+        <h4>Navigate Questions:</h4>
+        <div id="question-buttons" class="question-buttons">
+          <!-- Dynamic question buttons will be generated here -->
+        </div>
+
+        <div class="navigation-controls">
+          <button id="prev-btn">Prev</button>
+          <button id="next-btn">Next</button>
+          <button id="submit-btn">Submit Test</button>
+        </div>
+      </div>    
+    </section>
+  </main>
+
+
+    <!-- ⚙️ JavaScript -->
+    <script src="detailedresults.js"></script>
+</body>
+</html>
