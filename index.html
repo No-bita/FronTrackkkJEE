@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="JEE Backtrack - Your comprehensive platform for JEE Mains preparation and practice tests">
     <title>JEE Backtrack - Home</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="auth.js"></script>
@@ -198,12 +199,28 @@
         .clickable-text {
             cursor: pointer;
         }
+
+        .secondary-text {
+            color: var(--secondary);
+            /* Improving contrast ratio */
+            --secondary: #a0a0a0;
+        }
+        
+        /* Remove duplicate clickable-text class */
+        
+        /* Add focus styles for accessibility */
+        .clickable-text:focus,
+        .cta-button:focus,
+        nav ul li a:focus {
+            outline: 2px solid #fff;
+            outline-offset: 2px;
+        }
     </style>
 </head>
 <body>
     <header class="navbar">
         <div class="logo">
-            <a href="index.html">JEEBacktrack</a>
+            <a href="index.html" aria-label="JEE Backtrack Home">JEEBacktrack</a>
         </div>
         <nav>
             <ul>
@@ -221,16 +238,17 @@
         <section class="hero">
             <div class="text-content">
                 <h1>BacktrackJEE is a purpose-built tool for JEE Mains prep and performance tracking</h1>
-                <p>Meet the system for mastering JEE.<br>Practice PYQs in an exam-like environment to boost confidence & performance.</p>
-                <a href="#" class="cta-button">Start practicing</a>
+                <p class="secondary-text">Meet the system for mastering JEE.<br>Practice PYQs in an exam-like environment to boost confidence & performance.</p>
+                <a href="exam.html" class="cta-button" aria-label="Begin practice tests">Start practicing</a>
+            </div>
+            <div class="image-container">
+                <img src="Smartphone Laptop Top View.jpg" alt="Student practicing JEE exam on multiple devices" class="responsive-image">
             </div>
         </section>
-            <div class="image-container">
-                <img src="Smartphone Laptop Top View.jpg" alt="Exam simulation preview" class="responsive-image">
-            </div>
+        
         <section class="content-section">
             <h2>No surprises. No anxiety. Just results.</h2>
-            <p>Mains isn't JUST about knowing concepts — it's also about performing under pressure.<br>Our platform mirrors the actual exam experience, ensuring you walk into your exam fully prepared, and ready to excel.</p>
+            <p class="secondary-text">Mains isn't JUST about knowing concepts — it's also about performing under pressure.<br>Our platform mirrors the actual exam experience, ensuring you walk into your exam fully prepared, and ready to excel.</p>
             
             <h2>Why This Works?</h2>
             <ul>
