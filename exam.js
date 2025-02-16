@@ -321,7 +321,7 @@ async function submitTest() {
         // localStorage.removeItem("userAnswers");
         // localStorage.removeItem("year");
         // localStorage.removeItem("slot");
-        // window.location.href = "results.html";
+        window.location.href = "results.html";
     } catch (error) {
         console.error("❌ Error submitting test:", error);
         alert("❌ Submission failed! Please retry.");
