@@ -6,6 +6,7 @@ async function fetchResults() {
     const year = localStorage.getItem("year");
     const slot = localStorage.getItem("slot");
 
+    console.log(userId);
     if (!userId || !year || !slot) {
         alert("⚠️ Missing user ID, year, or slot. Please start the exam again.");
         return;
