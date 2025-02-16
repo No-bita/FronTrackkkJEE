@@ -3,13 +3,19 @@ let questions = [];
 let currentQuestionIndex = 0;
 let userAnswers = {};    
 
+// Extract year and slot from localStorage
+const year = localStorage.getItem("year");
+const slot = localStorage.getItem("slot");
 
+if (!year || !slot) {
+    alert("❌ Missing required test information (year/slot). Please login again.");
+    window.location.href = "dashboard.html"; // Redirect to dashboard if missing
+}
 // Fetch Questions from Backend
 document.addEventListener("DOMContentLoaded", async () => {
     try {
         await fetchQuestions();
         setupEventListeners();
-        userAnswers = JSON.parse(localStorage.getItem("userAnswers")) || {};
         updateQuestion();
     } catch (error) {
         console.error("❌ Error during initialization:", error);
@@ -26,7 +32,7 @@ async function fetchQuestions() {
 
         if (!response.ok) {
             throw new Error(`Error fetching questions: ${response.statusText}`);
-        }
+        }   
 
         questions = await response.json();
 
