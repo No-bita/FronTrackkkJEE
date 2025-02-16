@@ -14,6 +14,8 @@ async function fetchResults() {
 
     // ✅ Encode slot to handle spaces
     const encodedSlot = encodeURIComponent(slot);
+    console.log(`Encoded Slot: ${encodedSlot}`);
+    console.log(`Original Slot: ${slot}`);
 
     try {
         const response = await fetch(`${API_BASE_URL}/results/calculate?user_id=${userId}&year=${year}&slot=${encodedSlot}`, {
