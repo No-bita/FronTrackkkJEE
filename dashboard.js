@@ -80,6 +80,7 @@ function setupQuizStart() {
         startQuizBtn.addEventListener("click", function () {
             const selectedYear = document.getElementById("year-dropdown").value;
             const selectedSlot = document.getElementById("slot-dropdown").value;
+            localStorage.removeItem("userAnswers");
 
             if (!selectedYear || !selectedSlot) {
                 alert("Please select a year and slot before starting the quiz.");
