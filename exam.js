@@ -318,10 +318,10 @@ async function submitTest() {
 
         const data = await response.json();
         alert(`✅ Test Submitted!`);
-        localStorage.removeItem("userAnswers");
-        localStorage.removeItem("year");
-        localStorage.removeItem("slot");
-        window.location.href = "results.html";
+        // localStorage.removeItem("userAnswers");
+        // localStorage.removeItem("year");
+        // localStorage.removeItem("slot");
+        // window.location.href = "results.html";
     } catch (error) {
         console.error("❌ Error submitting test:", error);
         alert("❌ Submission failed! Please retry.");
