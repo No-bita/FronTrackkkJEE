@@ -8,18 +8,25 @@
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="index.html" aria-label="JEE Backtrack Home">JEEBacktrack</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+            </ul>
+        </nav>
+        <div class="auth-links">
+            <span class="clickable-text" onclick="logout()">Logout</span>
+        </div>
+    </header>
+
     <!-- Main Content -->
     <main class="content">
-        <!-- Top Navigation -->
-        <header class="top-nav">
-            <h1>BacktrackJEE</h1>
-            <div class="nav-right">
-                <h2>Welcome, <span id="user-name"></span>!</h2>
-                <button class="upgrade-btn">Upgrade</button>
-            </div>
-        </header>        
-
-        <!-- Dashboard -->
+        <!-- Dashboard Body -->
         <div class="dashboard">
             <div class="card">
                 <h3>Performance Overview</h3>
@@ -40,7 +47,6 @@
                 <p>✅ 2 Full Tests Completed</p>
                 <p>✅ 4 Subject Tests Completed</p>
                 <div class="stats-value">85%</div>
-                <p>Average Accuracy</p>
             </div>
 
             <div class="card">
@@ -68,12 +74,14 @@
             </div>
             <button id="start-quiz-btn">Start Test</button>
         </section>
-
-        <!-- Logout Button -->
-        <button id="logout">Logout</button>
     </main>
 
-    <!-- Link JavaScript File -->
+    <script>
+        function logout() {
+            localStorage.removeItem("token");
+            window.location.href = "index.html";
+        }
+    </script>
     <script src="dashboard.js"></script>
 </body>
 </html>

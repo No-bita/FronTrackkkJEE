@@ -10,7 +10,7 @@ body {
   
   /* Header */
   .header {
-    background: linear-gradient(90deg, #1e90ff, #00bcd4); /* A blue gradient */
+    background: #0d0d0d;
     color: white;
     padding: 10px 20px;
     display: flex;
